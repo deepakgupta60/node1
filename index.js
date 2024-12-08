@@ -1,5 +1,10 @@
 const http = require("http")
 const server = http.createServer((req, res)=>{
+    
+    const currDate = new Date();
+
+    
+    
     console.log("request received")
     const serverInfo={
         name:"crio-server",
