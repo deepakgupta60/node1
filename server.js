@@ -9,18 +9,30 @@ app.get("/",(req,res)=>{
 })
 
 
-app.get("/currency",(req,res)=>{
-    res.send(currData)
-})
+// app.get("/currency",(req,res)=>{
+//     res.send(currData)
+// })
 
-app.get("/currency/:symbol",(req,res)=>{
+app.get("/currency/:cid",(req,res)=>{
     // console.log(req.params.symbol)
-    let ans=currData.data.find(data=>data.id==req.params.symbol.toUpperCase())
+
+    const {cid}=req.params;
+    let ans=currData.data.find(data=>data.id==cid.toUpperCase())
     if(ans)
         return res.send(ans)
-    res.status(404).send({message:`could not found: ${req.params.symbol}`})
+    res.status(404).send({message:`could not found: ${cid}`})
 })
 
+
+app.get("/currency",(req,res)=>{
+    const {min_value}=req.query;
+    if(min_value)
+        return res.send(currData.data.filter((data)=>data.min_size==min_value))
+
+    res.send(currData.data)
+
+    // console.log(req.query)
+})
 app.get("/mycurr/:cid",(req,res)=>{
     const resAns = currData.data.find(data=>data.id==req.params.cid.toUpperCase())
     resAns ? res.send(resAns) : res.status(404).send({message:`currency not found: ${req.params.cid}`})
